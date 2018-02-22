@@ -77,16 +77,28 @@ def trade_process(min_rate=0.01):
     if top_rate >= min_rate:
         trade_first_key = trade_top_first[0]
         trade_list = trade_first_key.split('-')
-        create_order(1, trade_list[0], 'buy-limit', trade_first_value[0])
-        coin_amount = 1 * 0.998 / float(trade_first_value[0])
-        if trade_list[1].endswith('btc') or trade_list[1].endswith('eth'):
-            create_order(coin_amount, trade_list[1], 'buy-limit', trade_first_value[1])
-            coin_amount = coin_amount * 0.998 / trade_first_value[1]
+        first_close = get_coin_close(trade_list[0])  # 重新获取当前价格
+        second_close = get_coin_close(trade_list[1])
+        third_close = get_coin_close(trade_list[2])
+        coin_amount = 1 * 0.998 / float(first_close)
+        if trade_list[0].startswith('btc') or (trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
+            coin_amount = coin_amount * 0.998 / float(second_close)
         else:
-            create_order(coin_amount, trade_list[1], 'sell-limit', trade_first_value[1])
-            coin_amount = coin_amount * 0.998 * trade_first_value[1]
-        create_order(coin_amount, trade_list[3], 'sell-limit', trade_first_value[2])
-        coin_amount = coin_amount * trade_first_value[2] * 0.998 - 1
+            coin_amount = coin_amount * 0.998 * float(second_close)
+        coin_amount = coin_amount * float(third_close) * 0.998 - 1
+        if coin_amount >= min_rate:
+            create_order(1, trade_list[0], 'buy-limit', trade_first_value[0])
+            coin_amount = 1 * 0.998 / float(trade_first_value[0])
+            if trade_list[1].endswith('btc') or trade_list[1].endswith('eth'):
+                create_order(coin_amount, trade_list[1], 'buy-limit', trade_first_value[1])
+                coin_amount = coin_amount * 0.998 / trade_first_value[1]
+            else:
+                create_order(coin_amount, trade_list[1], 'sell-limit', trade_first_value[1])
+                coin_amount = coin_amount * 0.998 * trade_first_value[1]
+            create_order(coin_amount, trade_list[3], 'sell-limit', trade_first_value[2])
+            coin_amount = coin_amount * trade_first_value[2] * 0.998 - 1
+
+
 
 
 def get_coin_close(coin_group=None):
@@ -121,7 +133,7 @@ def trade_process_demo(min_rate=1):
             else:
                 coin_amount = coin_amount * 0.998 * float(second_close)
             coin_amount = coin_amount * float(third_close) * 0.998 - 1
-            print(str(datetime.datetime.now()),'当前利率', first_close, second_close, third_close, coin_amount)
+            print(str(datetime.datetime.now()), '当前利率', first_close, second_close, third_close, coin_amount)
 
 
 def get_symbols_list():
