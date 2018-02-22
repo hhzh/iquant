@@ -1,4 +1,5 @@
 from huobi.HuobiServices import *
+import datetime
 
 
 # 换币利率排行
@@ -66,13 +67,14 @@ def create_order(amount, symbol, _type, price=0):
 
 
 # 执行一组换币交易
-def trade_process():
+def trade_process(min_rate=0.01):
     trade_top_list = get_trade_top()
     trade_top_first = trade_top_list[0]
 
     trade_first_value = trade_top_first[1]
     top_rate = float(trade_first_value[3])
-    if top_rate > 0.01:
+    print(str(datetime.datetime.now()), '最高利率的换币组合', trade_top_first)
+    if top_rate >= min_rate:
         trade_first_key = trade_top_first[0]
         trade_list = trade_first_key.split('-')
         create_order(1, trade_list[0], 'buy-limit', trade_first_value[0])
@@ -96,13 +98,13 @@ def get_coin_close(coin_group=None):
 
 
 # 测试一组换币交易
-def trade_process_test(min_rate=1):
+def trade_process_demo(min_rate=1):
     trade_top_list = get_trade_top()
     trade_top_first = trade_top_list[0]
 
     trade_first_value = trade_top_first[1]
     top_rate = float(trade_first_value[3])
-    print(trade_top_first)
+    print(str(datetime.datetime.now()), '最高利率的换币组合', trade_top_first)
     if top_rate >= min_rate:
         i = 0
         while i < 15:
@@ -119,7 +121,7 @@ def trade_process_test(min_rate=1):
             else:
                 coin_amount = coin_amount * 0.998 * float(second_close)
             coin_amount = coin_amount * float(third_close) * 0.998 - 1
-            print(first_close, second_close, third_close, coin_amount)
+            print(str(datetime.datetime.now()),'当前利率', first_close, second_close, third_close, coin_amount)
 
 
 def get_symbols_list():
@@ -138,10 +140,10 @@ if __name__ == '__main__':
     # print(get_symbol_list())
     # for symbol_group in get_symbol_list():
     #     print(symbol_group)
-    trade_top_list = get_trade_top()
-    print(type(trade_top_list))
-    for trade_top1 in trade_top_list:
-        print(trade_top1)
+    # trade_top_list = get_trade_top()
+    # print(type(trade_top_list))
+    # for trade_top1 in trade_top_list:
+    #     print(trade_top1)
     # print(get_accounts())
     # print(get_balance())
     # for xx in get_symbol_list():
@@ -152,7 +154,7 @@ if __name__ == '__main__':
     # print(get_one_detail('ethusdt-cvceth-cvcusdt'))
     # print(get_symbols())
     # print(get_coin_balance('usdt'))
-    # trade_process_test(0.001)
+    trade_process_demo(0.001)
     # print(AMOUNT_PRECISION.get('omgusdt'))
     # print(create_order('{:.4f}'.format(1 / 10.01), 'omgusdt', 'buy-limit', 10.01))
     # print(order_info(1296036671))
