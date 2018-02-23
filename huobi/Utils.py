@@ -25,8 +25,9 @@ MARKET_URL = "https://api.huobi.pro"
 TRADE_URL = "https://api.huobi.pro"
 
 # 首次运行可通过get_accounts()获取acct_id,然后直接赋值,减少重复获取。
-ACCOUNT_ID = 
+ACCOUNT_ID =
 
+# 所有的交易对
 ALL_TRADE_PAIRS = ['omgusdt', 'linkbtc', 'naseth', 'eoseth', 'swftcbtc', 'xemusdt', 'zecusdt', 'dashbtc', 'paybtc',
                    'evxbtc', 'mdseth', 'tntbtc', 'qasheth', 'smteth', 'trxeth', 'thetausdt', 'luneth', 'ruffeth',
                    'bchbtc', 'elaeth', 'iosteth', 'tnbbtc', 'gnxeth', 'thetabtc', 'sntusdt', 'datbtc', 'soceth',
@@ -49,6 +50,7 @@ ALL_TRADE_PAIRS = ['omgusdt', 'linkbtc', 'naseth', 'eoseth', 'swftcbtc', 'xemusd
                    'gasbtc', 'mtnbtc', 'chatbtc', 'bt1btc', 'zlabtc', 'omgeth', 'rcneth', 'utketh', 'topcbtc', 'mtlbtc',
                    'gntusdt', 'appceth', 'propybtc', 'wiccbtc', 'rdneth', 'elfusdt', 'yeeeth']
 
+# 价格精度
 PRICE_PRECISION = {'omgusdt': 2, 'linkbtc': 8, 'naseth': 6, 'eoseth': 8, 'swftcbtc': 8, 'xemusdt': 4, 'zecusdt': 2,
                    'dashbtc': 6, 'paybtc': 6, 'evxbtc': 8, 'mdseth': 8, 'tntbtc': 8, 'qasheth': 6, 'smteth': 8,
                    'trxeth': 8, 'thetausdt': 4, 'luneth': 6, 'ruffeth': 8, 'bchbtc': 6, 'elaeth': 8, 'iosteth': 8,
@@ -77,6 +79,8 @@ PRICE_PRECISION = {'omgusdt': 2, 'linkbtc': 8, 'naseth': 6, 'eoseth': 8, 'swftcb
                    'gasbtc': 6, 'mtnbtc': 8, 'chatbtc': 8, 'bt1btc': 6, 'zlabtc': 8, 'omgeth': 6, 'rcneth': 8,
                    'utketh': 8, 'topcbtc': 8, 'mtlbtc': 6, 'gntusdt': 4, 'appceth': 6, 'propybtc': 8, 'wiccbtc': 8,
                    'rdneth': 8, 'elfusdt': 4, 'yeeeth': 8}
+
+# 数量精度
 AMOUNT_PRECISION = {'omgusdt': 4, 'linkbtc': 2, 'naseth': 4, 'eoseth': 2, 'swftcbtc': 2, 'xemusdt': 4, 'zecusdt': 4,
                     'dashbtc': 4, 'paybtc': 4, 'evxbtc': 2, 'mdseth': 0, 'tntbtc': 0, 'qasheth': 4, 'smteth': 0,
                     'trxeth': 2, 'thetausdt': 4, 'luneth': 4, 'ruffeth': 2, 'bchbtc': 4, 'elaeth': 2, 'iosteth': 2,
@@ -106,6 +110,7 @@ AMOUNT_PRECISION = {'omgusdt': 4, 'linkbtc': 2, 'naseth': 4, 'eoseth': 2, 'swftc
                     'utketh': 2, 'topcbtc': 2, 'mtlbtc': 4, 'gntusdt': 4, 'appceth': 4, 'propybtc': 2, 'wiccbtc': 2,
                     'rdneth': 0, 'elfusdt': 4, 'yeeeth': 2}
 
+# 所有的换币组合
 ALL_TRADE_GROUP = ['omgusdt-omgbtc-btcusdt', 'omgusdt-omgeth-ethusdt', 'xemusdt-xembtc-btcusdt',
                    'zecusdt-zecbtc-btcusdt', 'thetausdt-thetabtc-btcusdt', 'thetausdt-thetaeth-ethusdt',
                    'sntusdt-sntbtc-btcusdt', 'eosusdt-eoseth-ethusdt', 'eosusdt-eosbtc-btcusdt',
