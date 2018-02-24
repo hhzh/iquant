@@ -62,7 +62,7 @@ def create_order(amount, symbol, _type, price=0):
         result_data = send_order(amount=amount, symbol=symbol, source='api', _type=_type, price=price)
         if result_data and result_data.get('status') == 'ok':
             order_id = result_data.get('data')
-            print(str(datetime.datetime.now()), '创建订单成功', order_id, amount, symbol, _type, price, result_data)
+            print(str(datetime.datetime.now()), '创建订单成功', amount, symbol, _type, price, order_id)
             return order_id
         else:
             print(str(datetime.datetime.now()), '创建订单失败', amount, symbol, _type, price, result_data)
@@ -103,24 +103,23 @@ def trade_process(order_amount=1, min_rate=0.01):
                 trade_amount = order_amount / float(first_close)
                 trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[0])) + 'f}').format(trade_amount)
                 order_id = create_order(trade_amount, trade_list[0], 'buy-limit', first_close)
-                if order_id > 0:
-                    trade_amount = trade_amount * 0.998
-                    # trade_amount = (':.' + str(AMOUNT_PRECISION.get(trade_list[0])) + 'f').format(trade_amount)
-                    if trade_list[1].endswith('btc') or trade_list[1].endswith('eth'):
-                        trade_amount = order_amount / float(second_close)
+                if int(order_id) > 0:
+                    trade_amount = float(trade_amount) * 0.998
+                    if trade_list[0].startswith('btc') or (trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
+                        trade_amount = trade_amount / float(second_close)
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[1])) + 'f}').format(trade_amount)
                         order_id = create_order(trade_amount, trade_list[1], 'buy-limit', second_close)
-                        trade_amount = trade_amount * 0.998
+                        trade_amount = float(trade_amount) * 0.998
                     else:
-                        trade_amount = order_amount * float(second_close)
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[1])) + 'f}').format(trade_amount)
                         order_id = create_order(trade_amount, trade_list[1], 'sell-limit', second_close)
-                        trade_amount = trade_amount * 0.998
-                    if order_id > 0:
-                        trade_amount = order_amount * float(third_close)
+                        trade_amount = trade_amount * float(second_close)
+                        trade_amount = float(trade_amount) * 0.998
+                    if int(order_id) > 0:
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[2])) + 'f}').format(trade_amount)
-                        create_order(trade_amount, trade_list[3], 'sell-limit', third_close)
-                        trade_amount = trade_amount * 0.998 - 1
+                        create_order(trade_amount, trade_list[2], 'sell-limit', third_close)
+                        trade_amount = trade_amount * float(third_close)
+                        trade_amount = float(trade_amount) * 0.998 - 1
                         print(str(datetime.datetime.now()), '当前赚取利率', first_close, second_close, third_close,
                               trade_amount)
 
@@ -181,9 +180,9 @@ if __name__ == '__main__':
     # print(get_symbol_list())
     # for symbol_group in get_symbol_list():
     #     print(symbol_group)
-    trade_top_list = get_trade_top()
-    for trade_top1 in trade_top_list:
-        print(trade_top1)
+    # trade_top_list = get_trade_top()
+    # for trade_top1 in trade_top_list:
+    #     print(trade_top1)
     # print(get_accounts())
     # print(get_balance())
     # for xx in get_symbol_list():
@@ -197,7 +196,8 @@ if __name__ == '__main__':
     # print(AMOUNT_PRECISION.get('omgusdt'))
     # print(create_order('{:.4f}'.format(1 / 10.01), 'omgusdt', 'buy-limit', 10.01))
     # print(order_info(1296036671))
-    for i in range(10):
-        trade_process(1, 0.005)
-        print(get_coin_balance('usdt'))
+    print(get_coin_balance('usdt'))
+    # for i in range(20):
+    #     trade_process(1, 0.005)
+    #     print(get_coin_balance('usdt'))
 
