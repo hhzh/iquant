@@ -1,6 +1,6 @@
 from huobi.HuobiServices import *
 import datetime
-
+import time
 
 # 换币利率排行
 def get_trade_top():
@@ -103,6 +103,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                 trade_amount = order_amount / float(first_close)
                 trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[0])) + 'f}').format(trade_amount)
                 order_id = create_order(trade_amount, trade_list[0], 'buy-limit', first_close)
+                time.sleep(0.02)
                 if int(order_id) > 0:
                     trade_amount = float(trade_amount) * 0.998
                     if trade_list[0].startswith('btc') or (trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
@@ -118,6 +119,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                     if int(order_id) > 0:
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[2])) + 'f}').format(trade_amount)
                         create_order(trade_amount, trade_list[2], 'sell-limit', third_close)
+                        time.sleep(0.02)
                         trade_amount = trade_amount * float(third_close)
                         trade_amount = float(trade_amount) * 0.998 - 1
                         print(str(datetime.datetime.now()), '当前赚取利率', first_close, second_close, third_close,
