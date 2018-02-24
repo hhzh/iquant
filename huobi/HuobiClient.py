@@ -113,7 +113,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                     else:
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[1])) + 'f}').format(trade_amount)
                         order_id = create_order(trade_amount, trade_list[1], 'sell-limit', second_close)
-                        trade_amount = trade_amount * float(second_close)
+                        trade_amount = float(trade_amount) * float(second_close)
                         trade_amount = float(trade_amount) * 0.998
                     if int(order_id) > 0:
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[2])) + 'f}').format(trade_amount)
