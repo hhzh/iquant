@@ -6,13 +6,14 @@ import time
 import datetime
 
 print(datetime.datetime.now())
-time.sleep(0.02)
+time.sleep(1)
 print(datetime.datetime.now())
 
 # name = 'omgusdt'
+
 # print(name.replace('usdt', 'btc'))
 # print(name)
-# print(name[len('omg'):])
+# print(name[:len('usdt')-1])
 # print('{a:.{b}f}'.format(a=8 / 11, b=AMOUNT_PRECISION.get('omgusdt')))
 # # print(1 / 11.01)
 # print(('{:.' + str(AMOUNT_PRECISION.get('omgusdt')) + 'f}').format(8 / 11))
@@ -30,3 +31,6 @@ print(datetime.datetime.now())
 # print(apath)
 # print(os.path.dirname(os.path.abspath(__file__)))
 # print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# for i in range(5):
+#     print('hello')

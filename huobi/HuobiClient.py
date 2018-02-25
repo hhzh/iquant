@@ -2,6 +2,7 @@ from huobi.HuobiServices import *
 import datetime
 import time
 
+
 # 换币利率排行
 def get_trade_top():
     trade_top = {}
@@ -103,10 +104,18 @@ def trade_process(order_amount=1, min_rate=0.01):
                 trade_amount = order_amount / float(first_close)
                 trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[0])) + 'f}').format(trade_amount)
                 order_id = create_order(trade_amount, trade_list[0], 'buy-limit', first_close)
-                time.sleep(0.02)
+
+                first_coin = trade_list[0][:len('usdt') - 1]
+                first_coin_amount = get_coin_balance(first_coin)
+                for i in range(300):
+                    if float(first_coin_amount) > float(trade_amount):
+                        break
+                    time.sleep(0.01)
+
                 if int(order_id) > 0:
                     trade_amount = float(trade_amount) * 0.998
-                    if trade_list[0].startswith('btc') or (trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
+                    if trade_list[0].startswith('btc') or (
+                                trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
                         trade_amount = trade_amount / float(second_close)
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[1])) + 'f}').format(trade_amount)
                         order_id = create_order(trade_amount, trade_list[1], 'buy-limit', second_close)
@@ -117,10 +126,16 @@ def trade_process(order_amount=1, min_rate=0.01):
                         trade_amount = float(trade_amount) * float(second_close)
                         trade_amount = float(trade_amount) * 0.998
                     if int(order_id) > 0:
+                        third_coin = trade_list[2][:len('usdt') - 1]
+                        third_coin_amount = get_coin_balance(third_coin)
+                        for i in range(300):
+                            if float(third_coin_amount) > float(trade_amount):
+                                break
+                            time.sleep(0.01)
+
                         trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[2])) + 'f}').format(trade_amount)
                         create_order(trade_amount, trade_list[2], 'sell-limit', third_close)
-                        time.sleep(0.02)
-                        trade_amount = trade_amount * float(third_close)
+                        trade_amount = float(trade_amount) * float(third_close)
                         trade_amount = float(trade_amount) * 0.998 - 1
                         print(str(datetime.datetime.now()), '当前赚取利率', first_close, second_close, third_close,
                               trade_amount)
@@ -198,8 +213,7 @@ if __name__ == '__main__':
     # print(AMOUNT_PRECISION.get('omgusdt'))
     # print(create_order('{:.4f}'.format(1 / 10.01), 'omgusdt', 'buy-limit', 10.01))
     # print(order_info(1296036671))
-    print(get_coin_balance('usdt'))
-    # for i in range(20):
-    #     trade_process(1, 0.005)
-    #     print(get_coin_balance('usdt'))
-
+    # print(get_coin_balance('usdt'))
+    for i in range(20):
+        trade_process(2, 0.003)
+        print(get_coin_balance('usdt'))

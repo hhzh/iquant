@@ -25,7 +25,7 @@ MARKET_URL = "https://api.huobi.pro"
 TRADE_URL = "https://api.huobi.pro"
 
 # 首次运行可通过get_accounts()获取acct_id,然后直接赋值,减少重复获取。
-ACCOUNT_ID = 
+ACCOUNT_ID =
 
 # 所有的交易对
 ALL_TRADE_PAIRS = ['omgusdt', 'linkbtc', 'naseth', 'eoseth', 'swftcbtc', 'xemusdt', 'zecusdt', 'dashbtc', 'paybtc',
