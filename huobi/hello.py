@@ -5,9 +5,9 @@ import os
 import time
 import datetime
 
-print(datetime.datetime.now())
-time.sleep(1)
-print(datetime.datetime.now())
+# print(datetime.datetime.now())
+# time.sleep(1)
+# print(datetime.datetime.now())
 
 # name = 'omgusdt'
 
@@ -34,3 +34,6 @@ print(datetime.datetime.now())
 
 # for i in range(5):
 #     print('hello')
+
+coin="thetausdt"
+print(coin[:coin.index('usdt')])

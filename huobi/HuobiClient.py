@@ -55,7 +55,8 @@ def get_coin_balance(coin_name=None):
         for balance_coin in balance_list:
             if balance_coin and balance_coin.get('currency') == coin_name and balance_coin.get('type') == 'trade':
                 return balance_coin.get('balance')
-
+    print(str(datetime.datetime.now()), '获取币种余额失败', coin_name)
+    return 0
 
 # 创建订单
 def create_order(amount, symbol, _type, price=0):
@@ -105,7 +106,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                 trade_amount = ('{:.' + str(AMOUNT_PRECISION.get(trade_list[0])) + 'f}').format(trade_amount)
                 order_id = create_order(trade_amount, trade_list[0], 'buy-limit', first_close)
 
-                first_coin = trade_list[0][:len('usdt') - 1]
+                first_coin = trade_list[0][:trade_list[0].index('usdt')]
                 for i in range(300):
                     first_coin_amount = get_coin_balance(first_coin)
                     if float(first_coin_amount) > float(trade_amount):
@@ -126,7 +127,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                         trade_amount = float(trade_amount) * float(second_close)
                         trade_amount = float(trade_amount) * 0.998
                     if int(order_id) > 0:
-                        third_coin = trade_list[2][:len('usdt') - 1]
+                        third_coin = trade_list[2][:trade_list[2].index('usdt')]
                         for i in range(300):
                             third_coin_amount = get_coin_balance(third_coin)
                             if float(third_coin_amount) > float(trade_amount):
@@ -140,7 +141,7 @@ def trade_process(order_amount=1, min_rate=0.01):
                         print(str(datetime.datetime.now()), '当前赚取利率', first_close, second_close, third_close,
                               trade_amount)
 
-
+# 获取某币种对的当前价格
 def get_coin_close(coin_group=None):
     try:
         detail_result = get_detail(coin_group)
@@ -153,34 +154,7 @@ def get_coin_close(coin_group=None):
         print('获取币价异常', coin_group, e)
         return 0
 
-
-# 测试一组换币交易
-def trade_process_demo(min_rate=1):
-    trade_top_list = get_trade_top()
-    trade_top_first = trade_top_list[0]
-
-    trade_first_value = trade_top_first[1]
-    top_rate = float(trade_first_value[3])
-    print(str(datetime.datetime.now()), '最高利率的换币组合', trade_top_first)
-    if top_rate >= min_rate:
-        i = 0
-        while i < 15:
-            i = i + 1
-            trade_top_first = trade_top_list[0]
-            trade_first_key = trade_top_first[0]
-            trade_list = trade_first_key.split('-')
-            first_close = get_coin_close(trade_list[0])
-            second_close = get_coin_close(trade_list[1])
-            third_close = get_coin_close(trade_list[2])
-            coin_amount = 1 * 0.998 / float(first_close)
-            if trade_list[0].startswith('btc') or (trade_list[0].startswith('eth') and trade_list[1].endswith('eth')):
-                coin_amount = coin_amount * 0.998 / float(second_close)
-            else:
-                coin_amount = coin_amount * 0.998 * float(second_close)
-            coin_amount = coin_amount * float(third_close) * 0.998 - 1
-            print(str(datetime.datetime.now()), '当前利率', first_close, second_close, third_close, coin_amount)
-
-
+# 获取所有的币种交易对
 def get_symbols_list():
     result_data = get_symbols()
     response_data = {}
@@ -213,7 +187,7 @@ if __name__ == '__main__':
     # print(AMOUNT_PRECISION.get('omgusdt'))
     # print(create_order('{:.4f}'.format(1 / 10.01), 'omgusdt', 'buy-limit', 10.01))
     # print(order_info(1296036671))
-    print(get_coin_balance('usdt'))
-    # for i in range(20):
-    #     trade_process(2, 0.003)
-    #     print(get_coin_balance('usdt'))
+    # print(get_coin_balance('usdt'))
+    for i in range(20):
+        trade_process(2, 0.003)
+        print(get_coin_balance('usdt'))
