@@ -213,7 +213,7 @@ if __name__ == '__main__':
     # print(AMOUNT_PRECISION.get('omgusdt'))
     # print(create_order('{:.4f}'.format(1 / 10.01), 'omgusdt', 'buy-limit', 10.01))
     # print(order_info(1296036671))
-    # print(get_coin_balance('usdt'))
+    print(get_coin_balance('usdt'))
     for i in range(20):
         trade_process(2, 0.003)
         print(get_coin_balance('usdt'))
